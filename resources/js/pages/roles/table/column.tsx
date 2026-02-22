@@ -1,11 +1,10 @@
-import { useAuth } from "@/hooks/use-auth";
-import { destroy, edit } from "@/routes/users";
-import { User } from "@/types";
+import { destroy, edit } from "@/routes/roles";
+import { Role } from "@/types";
 import { Link } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Trash } from "lucide-react";
 
-export const UserColumns: ColumnDef<User>[] = [
+export const RoleColumn: ColumnDef<Role>[] = [
     {
         id: "index",
         header: "#",
@@ -21,16 +20,20 @@ export const UserColumns: ColumnDef<User>[] = [
 
     },
     {
-        accessorKey: "email",
-        header: "Email",
-
-    }, {
-        accessorKey: "roles",
-        header: "Roles",
+        accessorKey: "permissions",
+        header: "Permissions",
         enableSorting: false,
         cell: ({ row }) => {
-            const roles = row.original.roles || [];
-            return roles.map(role => role.name).join(", ");
+            const permissions = row.original.permissions || [];
+            return (
+                <div className="flex flex-wrap gap-1">
+                    {permissions.map((permission) => (
+                        <span key={permission.id} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                            {permission.name}
+                        </span>
+                    ))}
+                </div>
+            );
         },
     }, {
         // action
@@ -38,15 +41,12 @@ export const UserColumns: ColumnDef<User>[] = [
         header: "Actions",
         cell: ({ row }) => {
             const user = row.original;
-            const auth = useAuth();
 
             return (
                 <div className="flex gap-2">
                     <Link href={edit(user)} className="p-3 bg-yellow-500 text-white rounded-full"><Edit className="size-4" /></Link>
-                    {auth?.id !== user.id ? (
+                    <Link href={destroy(user)} className="p-3 bg-red-500 text-white rounded-full"><Trash className="size-4" /></Link>
 
-                        <Link href={destroy(user)} className="p-3 bg-red-500 text-white rounded-full"><Trash className="size-4" /></Link>
-                    ) : null}
                 </div>
             );
         }
