@@ -24,7 +24,9 @@ class StoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed']
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'roles' => ['array'],
+            'roles.*' => ['string', 'exists:roles,name']
         ];
     }
     public function messages()
@@ -36,7 +38,9 @@ class StoreRequest extends FormRequest
             'email.unique' => 'Email sudah digunakan',
             'password.required' => 'Password Wajib diisi',
             'password.min' => 'Password minimal 8 karakter',
-            'password.confirmed' => 'Password tidak cocok'
+            'password.confirmed' => 'Password tidak cocok',
+            'roles.array' => 'Roles harus berupa array',
+            'roles.*.exists' => 'Role tidak valid',
         ];
     }
 }

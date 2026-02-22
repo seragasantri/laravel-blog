@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Permissions\StoreRequest;
 use App\Http\Requests\Permissions\UpdateRequest;
+use App\Http\Resources\PermissionResource;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 
@@ -15,7 +16,7 @@ class PermissionController extends Controller
     public function index()
     {
         return Inertia::render('permissions/index', [
-            'permissions' => Permission::all()
+            'permissions' => PermissionResource::collection(Permission::with('roles')->get())
         ]);
     }
 

@@ -1,6 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, User } from '@/types';
+import type { BreadcrumbItem, Role, User } from '@/types';
 import { dashboard } from '@/routes';
 import { index } from '@/routes/users';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,8 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import UserController from '@/actions/App/Http/Controllers/UserController';
+import { Checkbox } from '@/components/ui/checkbox';
+import { permission } from 'process';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,7 +23,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function UserEdit({ user }: { user: User }) {
+export default function UserEdit({ user, roles }: { user: User, roles: Role[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit User" />
@@ -82,6 +84,22 @@ export default function UserEdit({ user }: { user: User }) {
                                         />
                                         <InputError message={errors.password} />
                                     </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="roles">Role</Label>
+                                        {roles.map((role) => (
+                                            <div className="flex items-center gap-2" key={role.id}>
+                                                <Checkbox
+                                                    id={`roles-${role.id}`}
+                                                    name='roles[]'
+                                                    value={role.name}
+                                                    defaultChecked={user.roles?.some((p) => p.name === role.name)}
+                                                />
+                                                <span>{role.name}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+
 
 
                                     <Button

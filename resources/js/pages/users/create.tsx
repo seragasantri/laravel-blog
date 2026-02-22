@@ -1,6 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, Role } from '@/types';
 import { dashboard } from '@/routes';
 import { create, index } from '@/routes/users';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import UserController from '@/actions/App/Http/Controllers/UserController';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function UserCreate() {
+export default function UserCreate({ roles }: { roles: Role[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create User" />
@@ -96,6 +97,20 @@ export default function UserCreate() {
                                         <InputError
                                             message={errors.password_confirmation}
                                         />
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="roles">Role</Label>
+                                        {roles.map((role) => (
+                                            <div className="flex items-center gap-2" key={role.id}>
+                                                <Checkbox
+                                                    id={`roles-${role.id}`}
+                                                    name='roles[]'
+                                                    value={role.name}
+                                                />
+                                                <span>{role.name}</span>
+                                            </div>
+                                        ))}
                                     </div>
 
                                     <Button

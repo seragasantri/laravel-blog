@@ -16,6 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function RoleIndex({ roles }: { roles: Role[] }) {
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users" />

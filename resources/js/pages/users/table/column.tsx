@@ -30,7 +30,15 @@ export const UserColumns: ColumnDef<User>[] = [
         enableSorting: false,
         cell: ({ row }) => {
             const roles = row.original.roles || [];
-            return roles.map(role => role.name).join(", ");
+            return (
+                <div className="flex flex-wrap gap-1">
+                    {roles.map((role) => (
+                        <span key={role.id} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                            {role.name}
+                        </span>
+                    ))}
+                </div>
+            );
         },
     }, {
         // action

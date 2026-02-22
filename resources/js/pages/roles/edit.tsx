@@ -1,6 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, Role, User } from '@/types';
+import type { BreadcrumbItem, Permission, Role, User } from '@/types';
 import { dashboard } from '@/routes';
 import { index } from '@/routes/users';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import RoleController from '@/actions/App/Http/Controllers/RoleController';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function RoleEdit({ role }: { role: Role }) {
+export default function RoleEdit({ role, permissions }: { role: Role, permissions: Permission[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit Role" />
@@ -53,6 +54,21 @@ export default function RoleEdit({ role }: { role: Role }) {
                                             message={errors.name}
                                             className="mt-2"
                                         />
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="permissions">Permissions</Label>
+                                        {permissions.map((permission) => (
+                                            <div className="flex items-center gap-2" key={permission.id}>
+                                                <Checkbox
+                                                    id={`permission-${permission.id}`}
+                                                    name='permissions[]'
+                                                    value={permission.name}
+                                                    defaultChecked={role.permissions?.some((p) => p.name === permission.name)}
+                                                />
+                                                <span>{permission.name}</span>
+                                            </div>
+                                        ))}
                                     </div>
 
 
