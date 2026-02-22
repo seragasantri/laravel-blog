@@ -24,12 +24,12 @@ export const PermissionColumn: ColumnDef<Permission>[] = [
         header: "Permissions",
         enableSorting: false,
         cell: ({ row }) => {
-            const permissions = row.original.permissions || [];
+            const roles = row.original.roles || [];
             return (
                 <div className="flex flex-wrap gap-1">
-                    {permissions.map((permission) => (
-                        <span key={permission.id} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                            {permission.name}
+                    {roles.map((role) => (
+                        <span key={role.id} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                            {role.name}
                         </span>
                     ))}
                 </div>
