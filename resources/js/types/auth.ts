@@ -8,7 +8,25 @@ export type User = {
     created_at: string;
     updated_at: string;
     [key: string]: unknown;
+    roles?: Role[];
 };
+export interface Role {
+    id: number;
+    name: string;
+    guard_name: string;
+    created_at: string;
+    updated_at: string;
+    permissions?: Permission[];
+}
+
+export interface Permission {
+    id: number;
+    name: string;
+    guard_name: string;
+    created_at: string;
+    updated_at: string;
+    roles?: Role[];
+}
 
 export type Auth = {
     user: User;

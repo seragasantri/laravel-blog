@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, Folder, KeyRound, LayoutGrid, LockKeyhole, Users } from 'lucide-react';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -15,6 +15,10 @@ import {
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
 import { dashboard } from '@/routes';
+import users from '@/routes/users';
+import roles from '@/routes/roles';
+import permissions from '@/routes/permissions';
+import { NavSettings } from './nav-settings';
 
 const mainNavItems: NavItem[] = [
     {
@@ -22,6 +26,22 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+];
+
+const settingsNavItems: NavItem[] = [
+    {
+        title: 'Users',
+        href: users.index().url,
+        icon: Users
+    }, {
+        title: 'Roles',
+        href: roles.index().url,
+        icon: LockKeyhole
+    }, {
+        title: 'Permissions',
+        href: permissions.index().url,
+        icon: KeyRound
+    }
 ];
 
 const footerNavItems: NavItem[] = [
@@ -54,6 +74,7 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                <NavSettings items={settingsNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
