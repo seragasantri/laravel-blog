@@ -24,6 +24,8 @@ export const RoleColumn: ColumnDef<Role>[] = [
         header: "Permissions",
         enableSorting: false,
         cell: ({ row }) => {
+            console.log('tes: ' + row);
+
             const permissions = row.original.permissions || [];
             return (
                 <div className="flex flex-wrap gap-1">
