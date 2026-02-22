@@ -39,7 +39,6 @@ export const UserColumns: ColumnDef<User>[] = [
         cell: ({ row }) => {
             const user = row.original;
             const auth = useAuth();
-            console.log(auth);
 
             return (
                 <div className="flex gap-2">
