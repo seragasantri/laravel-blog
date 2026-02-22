@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Http\Resources\RoleResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -16,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         return Inertia::render('users/index', [
-            'users' => User::all()
+            'users' => UserResource::collection(User::with('roles')->get())
         ]);
     }
 
@@ -25,7 +28,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('users/create');
+        return Inertia::render('users/create', [
+            'roles' => RoleResource::collection(Role::all())
+        ]);
     }
 
     /**
@@ -33,11 +38,16 @@ class UserController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        User::create([
+        $user =  User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
+        if ($request->roles) {
+            $user->assignRole($request->roles);
+        }
+        //$
+        $user->assignRole();
 
         return to_route('users.index');
     }
@@ -53,7 +63,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return Inertia::render('users/edit', [
-            'user' => $user
+            'user' => $user,
+            'roles' => RoleResource::collection(Role::all())
         ]);
     }
 
@@ -67,6 +78,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $request->password ? bcrypt($request->password) : $user->password
         ]);
+        $user->syncRoles($request->roles);
         return to_route('users.index');
     }
 
